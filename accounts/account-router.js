@@ -39,4 +39,23 @@ router.post('/', async (req, res) => {
  }
 });
 
+router.put('/:id', async (req, res) => {
+ const { id } = req.params;
+ const accountInfo = req.body;
+ try {
+  const count = await db('accounts')
+   .where({ id })
+   .update(accountInfo);
+  if (count) {
+   res.status(200).json({ message: 'this account has been updated', count });
+  } else {
+   res.status(404).json({ message: 'could not find post with this id' });
+  }
+ } catch (err) {
+  res
+   .status(500)
+   .json({ message: 'could not update this account', error: err });
+ }
+});
+
 module.exports = router;
